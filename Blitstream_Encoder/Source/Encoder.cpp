@@ -154,7 +154,7 @@ void Encoder::CreateEncoder() {
 		.encodeConfig = &encode_config,
 		.maxEncodeWidth = 3840,
 		.maxEncodeHeight = 2160,
-		.tuningInfo = NV_ENC_TUNING_INFO_HIGH_QUALITY
+		.tuningInfo = NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY
 	};
 
 	NVENC_CHECK(nvenc_api.nvEncInitializeEncoder(nvenc_encoder, &encoder_init_params));

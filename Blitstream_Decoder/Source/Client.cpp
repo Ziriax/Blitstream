@@ -34,7 +34,20 @@ InitMessage Client::Initialize(const char *ip_address) {
     // Receive initial message
     InitMessage init_message {};
     int init_message_result = recv(connection_socket, reinterpret_cast<char *>(&init_message), sizeof(InitMessage), 0);
-    assert(init_message_result != SOCKET_ERROR && "Failed to receive initial message");
+
+    if (init_message_result < 0)
+    {
+      auto err = WSAGetLastError();
+
+      wchar_t* s = NULL;
+      FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL, err,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPWSTR)&s, 0, NULL);
+      fprintf(stderr, "%S\n", s);
+      LocalFree(s);
+      assert(false);
+    }
     assert(init_message.MAGIC == 0x4646 && "Unrecognized header");
 
     return init_message;
